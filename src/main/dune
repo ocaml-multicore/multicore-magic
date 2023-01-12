@@ -1,0 +1,3 @@
+(library
+ (name Multicore_magic)
+ (public_name multicore-magic))

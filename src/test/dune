@@ -1,0 +1,3 @@
+(tests
+ (names Multicore_magic_test)
+ (libraries Multicore_magic))
