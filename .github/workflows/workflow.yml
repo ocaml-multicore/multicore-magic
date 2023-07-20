@@ -3,8 +3,8 @@ name: build-and-test
 on:
   pull_request:
   push:
-    branches-ignore:
-      - gh-pages
+    branches:
+      - main
 
 jobs:
   build:
@@ -13,8 +13,11 @@ jobs:
       matrix:
         os:
           - ubuntu-latest
+          - macos-latest
         ocaml-compiler:
-          - 5.0.0
+          - 4.12.0
+          - 4.x
+          - 5.x
 
     runs-on: ${{ matrix.os }}
 
@@ -28,7 +31,10 @@ jobs:
           ocaml-compiler: ${{ matrix.ocaml-compiler }}
 
       - name: Install dependencies
-        run: opam pin . --with-doc --with-test --yes
+        run: opam install . --deps-only --with-test
 
-      - name: Build and test
-        run: ./script/ci
+      - name: Build
+        run: opam exec -- dune build
+
+      - name: Test
+        run: opam exec -- dune runtest
