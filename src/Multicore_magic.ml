@@ -16,13 +16,13 @@ let make_padded_array n x =
 let length_of_padded_array x = Array.length x - num_padding_words [@@inline]
 
 let length_of_padded_array_minus_1 x = Array.length x - (num_padding_words + 1)
-  [@@inline]
+[@@inline]
 
 let fenceless_get (atomic : 'a Atomic.t) = !(Obj.magic atomic : 'a ref)
-  [@@inline]
+[@@inline]
 
 let fenceless_set (atomic : 'a Atomic.t) value =
   (Obj.magic atomic : 'a ref) := value
-  [@@inline]
+[@@inline]
 
 let fence atomic = Atomic.fetch_and_add atomic 0 |> ignore [@@inline]
