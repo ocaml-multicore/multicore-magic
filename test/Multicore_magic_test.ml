@@ -1,3 +1,4 @@
+let can_pad_int () = assert (Multicore_magic.copy_as_padded 101 = 101)
 let can_pad_ref () = assert (!(Multicore_magic.copy_as_padded (ref 101)) = 101)
 
 let can_pad_atomic () =
@@ -10,6 +11,14 @@ let can_pad_records () =
   let foo = 42 and bar = Atomic.make 101 and baz = 9.6 in
   let x = Multicore_magic.copy_as_padded { foo; bar; baz } in
   assert (x.foo = foo && x.bar == bar && x.baz == baz)
+
+let can_pad_float_record () =
+  let open struct
+    type record = { foo : float; bar : float; baz : float }
+  end in
+  let foo = 4.2 and bar = 10.1 and baz = 9.6 in
+  let x = Multicore_magic.copy_as_padded { foo; bar; baz } in
+  assert (x.foo = foo && x.bar = bar && x.baz = baz)
 
 let can_pad_variants () =
   let open struct
@@ -65,9 +74,12 @@ let fence () =
 let () =
   Alcotest.run "multicore-magic"
     [
+      ("can pad int", [ Alcotest.test_case "" `Quick can_pad_int ]);
       ("can pad ref", [ Alcotest.test_case "" `Quick can_pad_ref ]);
       ("can pad atomic", [ Alcotest.test_case "" `Quick can_pad_atomic ]);
       ("can pad records", [ Alcotest.test_case "" `Quick can_pad_records ]);
+      ( "can pad float record",
+        [ Alcotest.test_case "" `Quick can_pad_float_record ] );
       ("can pad variants", [ Alcotest.test_case "" `Quick can_pad_variants ]);
       ("can pad arrays", [ Alcotest.test_case "" `Quick can_pad_arrays ]);
       ( "padded array length",
