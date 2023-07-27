@@ -7,8 +7,9 @@
 (** {1 Helpers for using padding to avoid false sharing} *)
 
 val copy_as_padded : 'a -> 'a
-(** Creates a shallow clone of the given object.  The clone will have extra
-    padding words added after the last used word.
+(** Depending on the object, either creates a shallow clone of it or returns it
+    as is.  When cloned, the clone will have extra padding words added after the
+    last used word.
 
     This is designed to help avoid
     {{:https://en.wikipedia.org/wiki/False_sharing} false sharing}.  False
@@ -32,21 +33,26 @@ val copy_as_padded : 'a -> 'a
     }
 
     let padded_variant = Multicore_magic.copy_as_padded (Some 1)
-
-    let padded_array = Multicore_magic.copy_as_padded [|3; 1; 4|]
 ]}
 
-    Padding changes the length of an array, see {!length_of_padded_array}. *)
+    Padding changes the length of an array.  If you need to pad an array, use
+    {!make_padded_array}. *)
 
 val make_padded_array : int -> 'a -> 'a array
 (** Creates a padded array.  The length of the returned array includes padding.
     Use {!length_of_padded_array} to get the unpadded length. *)
 
 val length_of_padded_array : 'a array -> int
-(** Returns the length of a padded array without the padding. *)
+(** Returns the length of an array created by {!make_padded_array} without the
+    padding.
+
+    {b WARNING}: This is not guaranteed to work with {!copy_as_padded}. *)
 
 val length_of_padded_array_minus_1 : 'a array -> int
-(** Returns the length of a padded array without the padding minus 1. *)
+(** Returns the length of an array created by {!make_padded_array} without the
+    padding minus 1.
+
+    {b WARNING}: This is not guaranteed to work with {!copy_as_padded}. *)
 
 (** {1 Missing [Atomic] operations} *)
 

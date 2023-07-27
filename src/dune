@@ -1,3 +1,51 @@
 (library
  (name Multicore_magic)
  (public_name multicore-magic))
+
+(rule
+ (targets cache.ml)
+ (deps cache.1.ml)
+ (enabled_if
+  (< %{ocaml_version} 5.0.0))
+ (action
+  (progn
+   (copy cache.1.ml cache.ml))))
+
+(rule
+ (targets cache.ml)
+ (deps cache.8.ml)
+ (enabled_if
+  (and
+   (>= %{ocaml_version} 5.0.0)
+   (not
+    (or
+     (= %{architecture} arm64)
+     (= %{architecture} power)
+     (= %{architecture} s390x)))))
+ (action
+  (progn
+   (copy cache.8.ml cache.ml))))
+
+(rule
+ (targets cache.ml)
+ (deps cache.16.ml)
+ (enabled_if
+  (and
+   (>= %{ocaml_version} 5.0.0)
+   (or
+    (= %{architecture} arm64)
+    (= %{architecture} power))))
+ (action
+  (progn
+   (copy cache.16.ml cache.ml))))
+
+(rule
+ (targets cache.ml)
+ (deps cache.32.ml)
+ (enabled_if
+  (and
+   (>= %{ocaml_version} 5.0.0)
+   (= %{architecture} s390x)))
+ (action
+  (progn
+   (copy cache.32.ml cache.ml))))
