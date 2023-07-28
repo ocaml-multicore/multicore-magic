@@ -5,11 +5,11 @@ let can_pad_atomic () =
 
 let can_pad_records () =
   let open struct
-    type record = { foo : int; bar : int Atomic.t }
+    type record = { foo : int; bar : int Atomic.t; baz : float }
   end in
-  let foo = 42 and bar = Atomic.make 101 in
-  let x = Multicore_magic.copy_as_padded { foo; bar } in
-  assert (x.foo = foo && x.bar == bar)
+  let foo = 42 and bar = Atomic.make 101 and baz = 9.6 in
+  let x = Multicore_magic.copy_as_padded { foo; bar; baz } in
+  assert (x.foo = foo && x.bar == bar && x.baz == baz)
 
 let can_pad_variants () =
   let open struct
@@ -38,6 +38,15 @@ let padded_array_length_minus_1 () =
       (Multicore_magic.make_padded_array 101 0)
     = 100)
 
+let can_pad_float_arrays () =
+  let x = 4.2 in
+  let xs = Multicore_magic.make_padded_array 5 x in
+  assert (5 <= Array.length xs);
+  for i = 0 to 4 do
+    assert (xs.(i) = x)
+  done;
+  assert (Multicore_magic.length_of_padded_array xs = 5)
+
 let fenceless_get () =
   assert (Multicore_magic.fenceless_get (Atomic.make 42) = 42)
 
@@ -65,6 +74,8 @@ let () =
         [ Alcotest.test_case "" `Quick padded_array_length ] );
       ( "padded array length - 1",
         [ Alcotest.test_case "" `Quick padded_array_length_minus_1 ] );
+      ( "can pad float arrays",
+        [ Alcotest.test_case "" `Quick can_pad_float_arrays ] );
       ("fenceless_get", [ Alcotest.test_case "" `Quick fenceless_get ]);
       ("fenceless_set", [ Alcotest.test_case "" `Quick fenceless_set ]);
       ("fence", [ Alcotest.test_case "" `Quick fence ]);

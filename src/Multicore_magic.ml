@@ -9,8 +9,9 @@ let copy_as_padded (o : 'a) : 'a =
   Obj.magic n
 
 let make_padded_array n x =
-  let a = Array.make (n + num_padding_words) (Obj.magic ()) in
-  if x != Obj.magic () then Array.fill a 0 n x;
+  let a = Array.make (n + num_padding_words) x in
+  if Obj.is_block (Obj.repr x) && Obj.tag (Obj.repr x) != Obj.double_tag then
+    Array.fill a n num_padding_words (Obj.magic ());
   a
 
 let[@inline] length_of_padded_array x = Array.length x - num_padding_words
