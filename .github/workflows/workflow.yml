@@ -7,28 +7,21 @@ on:
       - main
 
 jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        os:
-          - ubuntu-latest
-          - macos-latest
-        ocaml-compiler:
-          - 4.12.0
-          - 4.x
-          - 5.x
-
-    runs-on: ${{ matrix.os }}
+  build-windows:
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use OCaml ${{ matrix.ocaml-compiler }}
+      - name: Set-up OCaml
         uses: ocaml/setup-ocaml@v2
         with:
-          ocaml-compiler: ${{ matrix.ocaml-compiler }}
+          ocaml-compiler: ocaml.5.0.0,ocaml-option-mingw
+          opam-repositories: |
+            dra27: https://github.com/dra27/opam-repository.git#windows-5.0
+            default: https://github.com/fdopen/opam-repository-mingw.git#opam2
+            standard: https://github.com/ocaml/opam-repository.git
 
       - name: Install dependencies
         run: opam install . --deps-only --with-test
