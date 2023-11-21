@@ -1,3 +1,4 @@
-(tests
- (names Multicore_magic_test)
- (libraries Multicore_magic alcotest))
+(test
+ (name Multicore_magic_test)
+ (modules Multicore_magic_test)
+ (libraries Multicore_magic alcotest domain_shims threads.posix unix))

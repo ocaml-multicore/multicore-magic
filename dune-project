@@ -4,6 +4,8 @@
 
 (generate_opam_files true)
 
+(implicit_transitive_deps false)
+
 (source
  (github ocaml-multicore/multicore-magic))
 
@@ -21,6 +23,10 @@
  (depends
   (ocaml
    (>= 4.12.0))
+  (domain_shims
+   (and
+    (>= 0.1.0)
+    :with-test))
   (alcotest
    (and
     (>= 1.7.0)
