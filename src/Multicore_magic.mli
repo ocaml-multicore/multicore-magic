@@ -128,3 +128,43 @@ val fence : int Atomic.t -> unit
 (** Perform a full acquire-release fence on the given atomic.
 
     [fence atomic] is equivalent to [ignore (Atomic.fetch_and_add atomic 0)]. *)
+
+(** {1 Fixes and workarounds} *)
+
+module Transparent_atomic : sig
+  (** A replacement for [Stdlib.Atomic] with fixes and performance improvements
+
+      [Stdlib.Atomic.get] is incorrectly subject to CSE optimization in OCaml
+      5.0.0 and 5.1.0.  This can result in code being generated that can produce
+      results that cannot be explained with the OCaml memory model.  It can also
+      sometimes result in code being generated where a manual optimization to
+      avoid writing to memory is defeated by the compiler as the compiler
+      eliminates a (repeated) read access.  This module implements {!get} such
+      that argument to [Stdlib.Atomic.get] is passed through
+      [Sys.opaque_identity], which prevents the compiler from applying the CSE
+      optimization.
+
+      OCaml 5 generates inefficient accesses of ['a Stdlib.Atomic.t array]s
+      assuming that the array might be an array of [float]ing point numbers.
+      That is because the [Stdlib.Atomic.t] type constructor is opaque, which
+      means that the compiler cannot assume that [_ Stdlib.Atomic.t] is not the
+      same as [float].  This module defines {{!t} the type} as [private 'a ref],
+      which allows the compiler to know that it cannot be the same as [float],
+      which allows the compiler to generate more efficient array accesses.  This
+      can both improve performance and reduce size of generated code when using
+      arrays of atomics. *)
+
+  type !'a t = private 'a ref
+
+  val make : 'a -> 'a t
+  val make_contended : 'a -> 'a t
+  val get : 'a t -> 'a
+  val fenceless_get : 'a t -> 'a
+  val set : 'a t -> 'a -> unit
+  val fenceless_set : 'a t -> 'a -> unit
+  val exchange : 'a t -> 'a -> 'a
+  val compare_and_set : 'a t -> 'a -> 'a -> bool
+  val fetch_and_add : int t -> int -> int
+  val incr : int t -> unit
+  val decr : int t -> unit
+end
