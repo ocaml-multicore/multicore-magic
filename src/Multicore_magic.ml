@@ -34,7 +34,8 @@ let[@inline] length_of_padded_array x = Array.length x - num_padding_words
 let[@inline] length_of_padded_array_minus_1 x =
   Array.length x - (num_padding_words + 1)
 
-let[@inline] fenceless_get (atomic : 'a Atomic.t) = !(Obj.magic atomic : 'a ref)
+let[@inline] fenceless_get (atomic : 'a Atomic.t) =
+  !(Sys.opaque_identity (Obj.magic atomic : 'a ref))
 
 let[@inline] fenceless_set (atomic : 'a Atomic.t) value =
   (Obj.magic atomic : 'a ref) := value
@@ -52,7 +53,7 @@ module Transparent_atomic = struct
   let[@inline] make x = of_atomic (Atomic.make x)
   let[@inline] make_contended x = of_atomic (copy_as_padded (Atomic.make x))
   let[@inline] get x = Atomic.get (Sys.opaque_identity (as_atomic x))
-  let[@inline] fenceless_get x = !x
+  let[@inline] fenceless_get x = !(Sys.opaque_identity x)
   let[@inline] compare_and_set x b a = Atomic.compare_and_set (as_atomic x) b a
   let[@inline] exchange x v = Atomic.exchange (as_atomic x) v
   let[@inline] set x v = Atomic.set (as_atomic x) v
