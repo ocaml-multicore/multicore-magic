@@ -22,18 +22,18 @@ val copy_as_padded : 'a -> 'a
 
     Many kinds of objects can be padded, for example:
 
-{[
-    let padded_atomic = Multicore_magic.copy_as_padded (Atomic.make 101)
+    {[
+      let padded_atomic = Multicore_magic.copy_as_padded (Atomic.make 101)
 
-    let padded_ref = Multicore_magic.copy_as_padded (ref 42)
+      let padded_ref = Multicore_magic.copy_as_padded (ref 42)
 
-    let padded_record = Multicore_magic.copy_as_padded {
-      number = 76;
-      pointer = 1 :: 2 :: 3 :: [];
-    }
+      let padded_record = Multicore_magic.copy_as_padded {
+        number = 76;
+        pointer = 1 :: 2 :: 3 :: [];
+      }
 
-    let padded_variant = Multicore_magic.copy_as_padded (Some 1)
-]}
+      let padded_variant = Multicore_magic.copy_as_padded (Some 1)
+    ]}
 
     Padding changes the length of an array.  If you need to pad an array, use
     {!make_padded_array}. *)
@@ -61,15 +61,15 @@ val fenceless_get : 'a Atomic.t -> 'a
 
     Consider the following prototypical example of a lock-free algorithm:
 
-{[
-    let rec prototypical_lock_free_algorithm () =
-      let expected = Atomic.get atomic in
-      let desired = (* computed from expected *) in
-      if not (Atomic.compare_and_set atomic expected desired) then
-        (* failure, maybe retry *)
-      else
-        (* success *)
-]}
+    {[
+      let rec prototypical_lock_free_algorithm () =
+        let expected = Atomic.get atomic in
+        let desired = (* computed from expected *) in
+        if not (Atomic.compare_and_set atomic expected desired) then
+          (* failure, maybe retry *)
+        else
+          (* success *)
+    ]}
 
     A potential performance problem with the above example is that it performs
     two acquire fences.  Both the [Atomic.get] and the [Atomic.compare_and_set]
@@ -78,15 +78,15 @@ val fenceless_get : 'a Atomic.t -> 'a
     Assuming the first fence is not necessary, we can rewrite the example using
     {!fenceless_get} as follows:
 
-{[
-    let rec prototypical_lock_free_algorithm () =
-      let expected = Multicore_magic.fenceless_get atomic in
-      let desired = (* computed from expected *) in
-      if not (Atomic.compare_and_set atomic expected desired) then
-        (* failure, maybe retry *)
-      else
-        (* success *)
-]}
+    {[
+      let rec prototypical_lock_free_algorithm () =
+        let expected = Multicore_magic.fenceless_get atomic in
+        let desired = (* computed from expected *) in
+        if not (Atomic.compare_and_set atomic expected desired) then
+          (* failure, maybe retry *)
+        else
+          (* success *)
+    ]}
 
     Now only a single acquire fence is performed by [Atomic.compare_and_set] and
     performance may be improved. *)
@@ -96,13 +96,13 @@ val fenceless_set : 'a Atomic.t -> 'a -> unit
 
     Consider the following example:
 
-{[
-    let new_atomic = Atomic.make dummy_value in
-    (* prepare data_structure referring to new_atomic *)
-    Atomic.set new_atomic data_structure;
-    (* publish the data_structure: *)
-    Atomic.exchance old_atomic data_structure
-]}
+    {[
+      let new_atomic = Atomic.make dummy_value in
+      (* prepare data_structure referring to new_atomic *)
+      Atomic.set new_atomic data_structure;
+      (* publish the data_structure: *)
+      Atomic.exchance old_atomic data_structure
+    ]}
 
     A potential performance problem with the above example is that it performs
     two full fences.  Both the [Atomic.set] used to initialize the data
@@ -113,13 +113,13 @@ val fenceless_set : 'a Atomic.t -> 'a -> unit
 
     Using {!fenceless_set} we can rewrite the example as follows:
 
-{[
-    let new_atomic = Atomic.make dummy_value in
-    (* prepare data_structure referring to new_atomic *)
-    Multicore_magic.fenceless_set new_atomic data_structure;
-    (* publish the data_structure: *)
-    Atomic.exchance old_atomic data_structure
-]}
+    {[
+      let new_atomic = Atomic.make dummy_value in
+      (* prepare data_structure referring to new_atomic *)
+      Multicore_magic.fenceless_set new_atomic data_structure;
+      (* publish the data_structure: *)
+      Atomic.exchance old_atomic data_structure
+    ]}
 
     Now only a single full fence is performed by [Atomic.exchange] and
     performance may be improved. *)
