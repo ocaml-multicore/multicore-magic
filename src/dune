@@ -2,6 +2,22 @@
  (name Multicore_magic)
  (public_name multicore-magic))
 
+;;
+
+(rule
+ (enabled_if
+  (< %{ocaml_version} 5.0.0))
+ (action
+  (copy index.ocaml4.ml index.ml)))
+
+(rule
+ (enabled_if
+  (>= %{ocaml_version} 5.0.0))
+ (action
+  (copy index.ocaml5.ml index.ml)))
+
+;;
+
 (rule
  (enabled_if
   (< %{ocaml_version} 5.0.0))

@@ -1,5 +1,6 @@
 include Padding
 module Transparent_atomic = Transparent_atomic
+include Index
 
 let[@inline] fenceless_get (atomic : 'a Atomic.t) =
   !(Sys.opaque_identity (Obj.magic atomic : 'a ref))

@@ -9,6 +9,7 @@ bug-reports: "https://github.com/ocaml-multicore/multicore-magic/issues"
 depends: [
   "dune" {>= "3.3"}
   "ocaml" {>= "4.12.0"}
+  "domain_shims" {>= "0.1.0" & with-test}
   "alcotest" {>= "1.7.0" & with-test}
   "odoc" {>= "2.2.0" & with-doc}
 ]

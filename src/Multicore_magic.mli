@@ -168,3 +168,31 @@ module Transparent_atomic : sig
   val incr : int t -> unit
   val decr : int t -> unit
 end
+
+(** {1 Avoiding contention} *)
+
+val instantaneous_domain_index : unit -> int
+(** [instantaneous_domain_index ()] potentially (re)allocates and returns a
+    non-negative integer "index" for the current domain.  The indices are
+    guaranteed to be unique among the domains that exist at a point in time.
+    Each call of [instantaneous_domain_index ()] may return a different index.
+
+    The intention is that the returned value can be used as an index into a
+    contention avoiding parallelism safe data structure.  For example, a naïve
+    scalable increment of one counter from an array of counters could be done as
+    follows:
+
+    {[
+      let incr counters =
+        (* Assuming length of [counters] is a power of two and larger than
+           the number of domains. *)
+        let mask = Array.length counters - 1 in
+        let index = instantaneous_domain_index () in
+        Atomic.incr counters.(index land mask)
+    ]}
+
+    The implementation ensures that the indices are allocated as densely as
+    possible at any given moment.  This should allow allocating as many counters
+    as needed and essentially eliminate contention.
+
+    On OCaml 4 [instantaneous_domain_index ()] will always return [0]. *)
