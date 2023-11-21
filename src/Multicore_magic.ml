@@ -1,4 +1,5 @@
 include Padding
+module Transparent_atomic = Transparent_atomic
 
 let[@inline] fenceless_get (atomic : 'a Atomic.t) = !(Obj.magic atomic : 'a ref)
 

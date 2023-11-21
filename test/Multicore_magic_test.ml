@@ -71,6 +71,17 @@ let fence () =
     Multicore_magic.fence atomic;
     Atomic.get atomic = 76)
 
+let transparent_atomic v0 v1 v2 () =
+  let x = Multicore_magic.Transparent_atomic.make_contended v0 in
+  assert (v0 = Multicore_magic.Transparent_atomic.fenceless_get x);
+  assert (v0 = Multicore_magic.Transparent_atomic.get x);
+  Multicore_magic.Transparent_atomic.set x v1;
+  assert (v1 = Multicore_magic.Transparent_atomic.fenceless_get x);
+  assert (v1 = Multicore_magic.Transparent_atomic.get x);
+  Multicore_magic.Transparent_atomic.fenceless_set x v2;
+  assert (v2 = Multicore_magic.Transparent_atomic.fenceless_get x);
+  assert (v2 = Multicore_magic.Transparent_atomic.get x)
+
 let () =
   Alcotest.run "multicore-magic"
     [
@@ -91,4 +102,8 @@ let () =
       ("fenceless_get", [ Alcotest.test_case "" `Quick fenceless_get ]);
       ("fenceless_set", [ Alcotest.test_case "" `Quick fenceless_set ]);
       ("fence", [ Alcotest.test_case "" `Quick fence ]);
+      ( "transparent_atomic with floats",
+        [ Alcotest.test_case "" `Quick (transparent_atomic 4.2 1.01 7.6) ] );
+      ( "transparent_atomic with ints",
+        [ Alcotest.test_case "" `Quick (transparent_atomic 42 101 76) ] );
     ]
