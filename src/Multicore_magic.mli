@@ -168,3 +168,10 @@ module Transparent_atomic : sig
   val incr : int t -> unit
   val decr : int t -> unit
 end
+
+(** {1 Avoiding contention} *)
+
+val domain_hash : unit -> int
+(** [domain_hash ()] computes a hash of [Domain.self ()] usable e.g. as a basis
+    for indexing into an array to avoid contention.  The hash values are not
+    guaranteed to be unique. *)

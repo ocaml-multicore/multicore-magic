@@ -82,6 +82,8 @@ let transparent_atomic v0 v1 v2 () =
   assert (v2 = Multicore_magic.Transparent_atomic.fenceless_get x);
   assert (v2 = Multicore_magic.Transparent_atomic.get x)
 
+let test_domain_hash () = assert (Multicore_magic.domain_hash () = 0)
+
 let () =
   Alcotest.run "multicore-magic"
     [
@@ -106,4 +108,5 @@ let () =
         [ Alcotest.test_case "" `Quick (transparent_atomic 4.2 1.01 7.6) ] );
       ( "transparent_atomic with ints",
         [ Alcotest.test_case "" `Quick (transparent_atomic 42 101 76) ] );
+      ("domain_hash", [ Alcotest.test_case "" `Quick test_domain_hash ]);
     ]

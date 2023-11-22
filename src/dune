@@ -2,6 +2,58 @@
  (name Multicore_magic)
  (public_name multicore-magic))
 
+;;
+
+(rule
+ (targets mix.ml)
+ (deps mix.64.ml)
+ (enabled_if %{arch_sixtyfour})
+ (action
+  (progn
+   (copy mix.64.ml mix.ml))))
+
+(rule
+ (targets mix.ml)
+ (deps mix.32.ml)
+ (enabled_if
+  (not %{arch_sixtyfour}))
+ (action
+  (progn
+   (copy mix.32.ml mix.ml))))
+
+;;
+
+(rule
+ (targets domain_id.ml)
+ (deps domain_id.ocaml4.ml)
+ (enabled_if
+  (< %{ocaml_version} 5.0.0))
+ (action
+  (progn
+   (copy domain_id.ocaml4.ml domain_id.ml))))
+
+(rule
+ (targets domain_id.ml)
+ (deps domain_id.noalloc.ml)
+ (enabled_if
+  (and
+   (>= %{ocaml_version} 5.0.0)
+   (< %{ocaml_version} 5.2.0)))
+ (action
+  (progn
+   (copy domain_id.noalloc.ml domain_id.ml))))
+
+(rule
+ (targets domain_id.ml)
+ (deps domain_id.stdlib.ml)
+ (enabled_if
+  (>= %{ocaml_version} 5.2.0))
+ (action
+  (progn
+   (copy domain_id.stdlib.ml domain_id.ml))))
+
+;;
+
 (rule
  (targets cache.ml)
  (deps cache.1.ml)

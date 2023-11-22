@@ -62,3 +62,5 @@ module Transparent_atomic = struct
   let[@inline] incr x = Atomic.incr (as_atomic x)
   let[@inline] decr x = Atomic.decr (as_atomic x)
 end
+
+let domain_hash () = Mix.int (Domain_id.self () :> int)
