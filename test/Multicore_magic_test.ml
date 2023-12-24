@@ -119,6 +119,8 @@ let test_instantaneous_domain_index () =
       in
 
       let domain () =
+        Random.self_init ();
+
         Atomic.incr num_started;
         (* [Domain.DLS] is not thread-safe so it might be necessary to make sure
            we get the index before spawning threads: *)
@@ -135,6 +137,8 @@ let test_instantaneous_domain_index () =
         Array.iter Thread.join threads;
         Atomic.incr num_exited
       in
+
+      Random.self_init ();
 
       let threads =
         Array.init n_domains @@ fun _ ->
