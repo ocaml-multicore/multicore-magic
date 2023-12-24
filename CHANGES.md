@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2.1.0
+
+- Added `instantaneous_domain_index` for the implementation of contention
+  avoiding data structures. (@polytypic)
+- Added `Transparent_atomic` module as a workaround to CSE issues in OCaml 5.0
+  and OCaml 5.1 and also to allow more efficient arrays of atomics. (@polytypic)
+- Fixed `fenceless_get` to not be subject to CSE. (@polytypic)
+
 ## 2.0.0
 
 - Changed the semantics of `copy_as_padded` to not always copy and to not
