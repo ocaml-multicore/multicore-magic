@@ -107,6 +107,7 @@ let test_instantaneous_domain_index () =
     let module Atomic = Multicore_magic.Transparent_atomic in
     let stress () =
       let n_domains = 7 in
+      let slack = 1 in
       let num_started = Atomic.make 0 |> Multicore_magic.copy_as_padded in
       let num_exited = Atomic.make 0 |> Multicore_magic.copy_as_padded in
       let failed = ref false |> Multicore_magic.copy_as_padded in
@@ -115,7 +116,7 @@ let test_instantaneous_domain_index () =
         let num_exited = Atomic.get num_exited in
         let i = Multicore_magic.instantaneous_domain_index () in
         let n = Atomic.get num_started - num_exited in
-        if i < 0 || n < i then failed := true
+        if i < 0 || n + slack < i || n_domains <= i then failed := true
       in
 
       let domain () =

@@ -129,7 +129,7 @@ open struct
             t.on_first_get t domain
           end
           else Index_allocator.release t.index_allocator index;
-          new_index
+          instantaneous_domain_index t domain
         end
         else begin
           Index_allocator.release t.index_allocator new_index;
