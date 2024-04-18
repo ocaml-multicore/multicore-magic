@@ -12,14 +12,14 @@ let copy_as_padded (o : 'a) : 'a =
       let t = Obj.tag o in
       if Sys.word_size = 64 && t != Obj.double_array_tag then begin
         let n = Obj.new_block t padded_size in
-        Array.blit (Obj.magic o) 0 (Obj.magic n) 0 original_size;
-        Obj.magic n
+        Array.blit (Obj.obj o) 0 (Obj.obj n) 0 original_size;
+        Obj.obj n
       end
-      else Obj.magic o
+      else Obj.obj o
     end
-    else Obj.magic o
+    else Obj.obj o
   end
-  else Obj.magic o
+  else Obj.obj o
 
 let make_padded_array n x =
   let a = Array.make (n + num_padding_words) x in
