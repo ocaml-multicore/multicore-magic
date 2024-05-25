@@ -1,6 +1,13 @@
 (library
  (name Multicore_magic)
- (public_name multicore-magic))
+ (public_name multicore-magic)
+ (libraries
+  (select
+   multicore_magic.ml
+   from
+   (multicore_magic_atomic_array_unboxed5 -> multicore_magic.common.ml)
+   (multicore_magic_atomic_array_boxed5 -> multicore_magic.common.ml)
+   (multicore_magic_atomic_array_ocaml4 -> multicore_magic.common.ml))))
 
 ;;
 
