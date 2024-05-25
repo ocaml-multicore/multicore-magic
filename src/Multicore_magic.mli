@@ -169,6 +169,66 @@ module Transparent_atomic : sig
   val decr : int t -> unit
 end
 
+(** {1 Missing functionality} *)
+
+module Atomic_array : sig
+  (** Array of (potentially unboxed) atomic locations.
+
+      Where available, this uses an undocumented operation exported by the OCaml
+      5 runtime,
+      {{:https://github.com/ocaml/ocaml/blob/7a5d882d22cdd32b6319e9be680bd1a3d67377a9/runtime/memory.c#L313-L338}
+      [caml_atomic_cas_field]}, which makes it possible to perform sequentially
+      consistent atomic updates of record fields and array elements.
+
+      Hopefully a future version of OCaml provides more comprehensive and even
+      more efficient support for both sequentially consistent and relaxed atomic
+      operations on records and arrays. *)
+
+  type !'a t
+  (** Represents an array of atomic locations. *)
+
+  val make : int -> 'a -> 'a t
+  (** [make n value] creates a new array of [n] atomic locations having given
+      [value]. *)
+
+  val of_array : 'a array -> 'a t
+  (** [of_array non_atomic_array] create a new array of atomic locations as a
+      copy of the given [non_atomic_array]. *)
+
+  val init : int -> (int -> 'a) -> 'a t
+  (** [init n fn] is equivalent to {{!of_array} [of_array (Array.init n fn)]}. *)
+
+  val length : 'a t -> int
+  (** [length atomic_array] returns the length of the [atomic_array]. *)
+
+  val unsafe_fenceless_get : 'a t -> int -> 'a
+  (** [unsafe_fenceless_get atomic_array index] reads and returns the value at
+      the specified [index] of the [atomic_array].
+
+      ⚠️ The read is {i relaxed} and may be reordered with respect to other reads
+      and writes in program order.
+
+      ⚠️ No bounds checking is performed. *)
+
+  val unsafe_fenceless_set : 'a t -> int -> 'a -> unit
+  (** [unsafe_fenceless_set atomic_array index value] writes the given [value]
+      to the specified [index] of the [atomic_array].
+
+      ⚠️ The write is {i relaxed} and may be reordered with respect to other
+      reads and (non-initializing) writes in program order.
+
+      ⚠️ No bounds checking is performed. *)
+
+  val unsafe_compare_and_set : 'a t -> int -> 'a -> 'a -> bool
+  (** [unsafe_compare_and_set atomic_array index before after] atomically
+      updates the specified [index] of the [atomic_array] to the [after] value
+      in case it had the [before] value and returns a boolean indicating whether
+      that was the case.  This operation is {i sequentially consistent} and may
+      not be reordered with respect to other reads and writes in program order.
+
+      ⚠️ No bounds checking is performed. *)
+end
+
 (** {1 Avoiding contention} *)
 
 val instantaneous_domain_index : unit -> int

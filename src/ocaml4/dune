@@ -1,0 +1,6 @@
+(library
+ (name multicore_magic_atomic_array_ocaml4)
+ (package multicore-magic)
+ (enabled_if
+  (< %{ocaml_version} 5.0.0))
+ (wrapped false))

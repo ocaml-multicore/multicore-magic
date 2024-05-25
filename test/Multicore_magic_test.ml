@@ -157,6 +157,21 @@ let test_instantaneous_domain_index () =
     stress ()
   end
 
+let atomic_array () =
+  let module Atomic_array = Multicore_magic.Atomic_array in
+  let floats = Atomic_array.of_array [| 1.01; 4.2 |] in
+  assert (Obj.tag (Obj.repr floats) != Obj.double_array_tag);
+  assert (Atomic_array.length floats = 2);
+  assert (Atomic_array.unsafe_fenceless_get floats 0 = 1.01);
+  assert (Atomic_array.unsafe_fenceless_get floats 1 = 4.2);
+  assert (
+    Atomic_array.unsafe_compare_and_set floats 1
+      (Atomic_array.unsafe_fenceless_get floats 1)
+      7.6);
+  assert (Atomic_array.unsafe_fenceless_get floats 1 = 7.6);
+  Atomic_array.unsafe_fenceless_set floats 0 9.6;
+  assert (Atomic_array.unsafe_fenceless_get floats 0 = 9.6)
+
 let () =
   Alcotest.run "multicore-magic"
     [
@@ -183,4 +198,5 @@ let () =
         [ Alcotest.test_case "" `Quick (transparent_atomic 42 101 76) ] );
       ( "instantaneous_domain_index",
         [ Alcotest.test_case "" `Quick test_instantaneous_domain_index ] );
+      ("Atomic_array", [ Alcotest.test_case "" `Quick atomic_array ]);
     ]

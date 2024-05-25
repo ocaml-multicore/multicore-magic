@@ -9,3 +9,5 @@ let[@inline] fenceless_set (atomic : 'a Atomic.t) value =
   (Obj.magic atomic : 'a ref) := value
 
 let[@inline] fence atomic = Atomic.fetch_and_add atomic 0 |> ignore
+
+module Atomic_array = Multicore_magic_atomic_array
