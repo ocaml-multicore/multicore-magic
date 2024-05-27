@@ -1,6 +1,6 @@
-# Release notes
+## 2.2.0
 
-All notable changes to this project will be documented in this file.
+- Add (unboxed) `Atomic_array` (@polytypic)
 
 ## 2.1.0
 
