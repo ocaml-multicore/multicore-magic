@@ -1,4 +1,4 @@
-(lang dune 3.3)
+(lang dune 3.14)
 
 (name multicore-magic)
 
@@ -23,6 +23,7 @@
  (depends
   (ocaml
    (>= 4.12.0))
+  ;; Test dependencies
   (domain_shims
    (and
     (>= 0.1.0)
@@ -31,7 +32,12 @@
    (and
     (>= 1.7.0)
     :with-test))
+  ;; Documentation dependencies
+  (sherlodoc
+   (and
+    (>= 0.2)
+    :with-doc))
   (odoc
    (and
-    (>= 2.2.0)
+    (>= 2.4.1)
     :with-doc))))
