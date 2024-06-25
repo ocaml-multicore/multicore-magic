@@ -41,3 +41,13 @@
    (and
     (>= 2.4.1)
     :with-doc))))
+
+(package
+ (name multicore-magic-dscheck)
+ (synopsis "Low-level multiscore utilities for OCaml")
+ (depends
+  (ocaml
+   (>= 4.12.0))
+  ;; Test dependencies
+  (multicore-magic
+   (= :version))))
