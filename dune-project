@@ -41,3 +41,14 @@
    (and
     (>= 2.4.1)
     :with-doc))))
+
+(package
+ (name multicore-magic-dscheck)
+ (synopsis
+  "A implementation of multicore-magic API using the atomic module of DScheck to make DScheck tests possible in libraries using multicore-magic")
+ (allow_empty)
+ (depends
+  (ocaml
+   (>= 4.12.0))
+  (dscheck
+   (>= 0.5.0))))
