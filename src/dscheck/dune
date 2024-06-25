@@ -1,0 +1,4 @@
+(library
+ (name multicore_magic_dscheck)
+ (package multicore-magic-dscheck)
+ (libraries multicore-magic dscheck))
