@@ -1,3 +1,7 @@
+## Next version
+
+- Add `copy_as ~padded` for convenient optional padding (@polytypic)
+
 ## 2.2.0
 
 - Add (unboxed) `Atomic_array` (@polytypic)

@@ -21,6 +21,9 @@ let copy_as_padded (o : 'a) : 'a =
   end
   else Obj.obj o
 
+let copy_as ?padded x =
+  match padded with None | Some false -> x | Some true -> copy_as_padded x
+
 let make_padded_array n x =
   let a = Array.make (n + num_padding_words) x in
   if Obj.is_block (Obj.repr x) then

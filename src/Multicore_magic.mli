@@ -38,6 +38,10 @@ val copy_as_padded : 'a -> 'a
     Padding changes the length of an array.  If you need to pad an array, use
     {!make_padded_array}. *)
 
+val copy_as : ?padded:bool -> 'a -> 'a
+(** [copy_as x] by default simply returns [x].  When [~padded:true] is
+    explicitly specified, returns {{!copy_as_padded} [copy_as_padded x]}. *)
+
 val make_padded_array : int -> 'a -> 'a array
 (** Creates a padded array.  The length of the returned array includes padding.
     Use {!length_of_padded_array} to get the unpadded length. *)
