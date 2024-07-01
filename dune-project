@@ -50,4 +50,4 @@
    (>= 4.12.0))
   ;; Test dependencies
   (multicore-magic
-   (= :version))))
+   (>= 2.2.0))))
