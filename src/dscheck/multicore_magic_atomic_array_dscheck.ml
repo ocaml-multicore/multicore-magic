@@ -17,4 +17,3 @@ let[@inline] unsafe_fenceless_get xs i = !(Obj.magic (at xs i))
 
 let[@inline] unsafe_compare_and_set xs i b a =
   Atomic.compare_and_set (at xs i) b a
-

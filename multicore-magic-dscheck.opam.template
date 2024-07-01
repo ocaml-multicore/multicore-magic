@@ -1,0 +1,5 @@
+pin-depends:
+  [
+  "dscheck.~dev"
+  "git+https://github.com/lyrm/dscheck.git#make_contended"
+  ]
