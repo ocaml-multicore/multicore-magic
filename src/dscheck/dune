@@ -1,4 +1,6 @@
 (library
  (name multicore_magic_dscheck)
- (package multicore-magic-dscheck)
+ (public_name multicore-magic-dscheck)
+ (wrapped false)
+ (root_module Deps)
  (libraries multicore-magic dscheck))
