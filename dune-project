@@ -51,4 +51,5 @@
    (>= 4.12.0))
   ;; Test dependencies
   (multicore-magic
-   (>= 2.2.0))))
+   (>= 2.2.0))
+   (dscheck (= dev))))
