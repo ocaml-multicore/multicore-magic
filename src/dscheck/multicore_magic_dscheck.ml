@@ -1,9 +1,14 @@
-include Deps.Multicore_magic
-module Atomic = Deps.Dscheck.TracedAtomic
+module Atomic = Dscheck.TracedAtomic
+
+let copy_as_padded = Fun.id
+let make_padded_array = Array.make
+let length_of_padded_array = Array.length
+let length_of_padded_array_minus_1 xs = Array.length xs - 1
 
 module Transparent_atomic = struct
   include Atomic
 
+  let make_contended = make
   let fenceless_get = get
   let fenceless_set = set
 end
@@ -35,3 +40,5 @@ module Atomic_array = struct
   let[@inline] unsafe_compare_and_set xs i b a =
     Atomic.compare_and_set (at xs i) b a
 end
+
+let instantaneous_domain_index () = 0

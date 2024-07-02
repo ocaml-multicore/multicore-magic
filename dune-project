@@ -44,7 +44,8 @@
 
 (package
  (name multicore-magic-dscheck)
- (synopsis "Low-level multiscore utilities for OCaml")
+ (synopsis
+  "A implementation of multicore-magic API using the atomic module of DScheck to make DScheck tests possible in libraries using multicore-magic.")
  (depends
   (ocaml
    (>= 4.12.0))
