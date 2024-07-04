@@ -1,6 +1,6 @@
 (library
  (name multicore_magic_dscheck)
  (public_name multicore-magic-dscheck)
- (libraries multicore-magic dscheck)
+ (libraries dscheck)
  (enabled_if
   (>= %{ocaml_version} 5)))

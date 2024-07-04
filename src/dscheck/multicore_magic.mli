@@ -1,6 +1,7 @@
 module Atomic = Dscheck.TracedAtomic
 
 val copy_as_padded : 'a -> 'a
+val copy_as : ?padded:bool -> 'a -> 'a
 val make_padded_array : int -> 'a -> 'a array
 val length_of_padded_array : 'a array -> int
 val length_of_padded_array_minus_1 : 'a array -> int

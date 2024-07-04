@@ -50,8 +50,5 @@
  (depends
   (ocaml
    (>= 4.12.0))
-  ;; Test dependencies
-  (multicore-magic
-   (>= 2.2.0))
   (dscheck
-   (= dev))))
+   (>= 0.5.0))))
