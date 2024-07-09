@@ -1,4 +1,5 @@
 (test
  (name Multicore_magic_test)
+ (package multicore-magic)
  (modules Multicore_magic_test)
  (libraries Multicore_magic alcotest domain_shims threads.posix unix))
