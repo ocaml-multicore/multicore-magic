@@ -45,7 +45,7 @@
 (package
  (name multicore-magic-dscheck)
  (synopsis
-  "A implementation of multicore-magic API using the atomic module of DScheck to make DScheck tests possible in libraries using multicore-magic")
+  "An implementation of multicore-magic API using the atomic module of DScheck to make DScheck tests possible in libraries using multicore-magic")
  (allow_empty)
  (depends
   (ocaml

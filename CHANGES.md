@@ -1,6 +1,8 @@
-## Next version
+## 2.3.0
 
 - Add `copy_as ~padded` for convenient optional padding (@polytypic)
+- Add `multicore-magic-dscheck` package and library to help testing with DScheck
+  (@lyrm, review @polytypic)
 
 ## 2.2.0
 
