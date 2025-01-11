@@ -1,4 +1,4 @@
-## Next version
+## 2.3.1
 
 - Allow unboxed `Atomic_array` on 5.3 (@polytypic)
 - Support js_of_ocaml (@polytypic)
