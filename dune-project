@@ -32,6 +32,14 @@
    (and
     (>= 1.7.0)
     :with-test))
+  (js_of_ocaml
+   (and
+    (>= 5.4.0)
+    :with-test))
+  (conf-npm
+   (and
+    (<> :os "win32")
+    :with-test))
   ;; Documentation dependencies
   (sherlodoc
    (and

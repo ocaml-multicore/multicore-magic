@@ -8,4 +8,6 @@
  (foreign_stubs
   (language c)
   (names multicore_magic_atomic_array))
+ (js_of_ocaml
+  (javascript_files multicore_magic_atomic_array.js))
  (wrapped false))
