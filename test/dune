@@ -1,5 +1,32 @@
 (test
- (name Multicore_magic_test)
  (package multicore-magic)
- (modules Multicore_magic_test)
- (libraries Multicore_magic alcotest domain_shims threads.posix unix))
+ (name test_on_main_thread_only)
+ (modules test_on_main_thread_only)
+ (libraries multicore-magic alcotest))
+
+(rule
+ (package multicore-magic)
+ (action
+  (copy test_on_main_thread_only.ml test_on_js_of_ocaml.ml)))
+
+(test
+ (package multicore-magic)
+ (name test_on_js_of_ocaml)
+ (modules test_on_js_of_ocaml)
+ (modes js)
+ (build_if
+  (and
+   (<> %{os_type} Win32)))
+ (action
+  ;; It is fine if 'node:fs' cannot be found.  js_of_ocaml>=5.9 does not like
+  ;; old node versions.
+  (with-accepted-exit-codes
+   (or 0 1)
+   (run node %{test})))
+ (libraries multicore-magic alcotest))
+
+(test
+ (package multicore-magic)
+ (name test_with_threads_and_domains)
+ (modules test_with_threads_and_domains)
+ (libraries multicore-magic alcotest domain_shims threads.posix unix))
