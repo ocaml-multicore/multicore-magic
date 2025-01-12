@@ -16,6 +16,7 @@
  (modes js)
  (build_if
   (and
+   (<> %{architecture} i386)
    (<> %{os_type} Win32)))
  (action
   ;; It is fine if 'node:fs' cannot be found.  js_of_ocaml>=5.9 does not like

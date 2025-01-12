@@ -38,6 +38,7 @@
     :with-test))
   (conf-npm
    (and
+    (<> :arch "x86_32")
     (<> :os "win32")
     :with-test))
   ;; Documentation dependencies
