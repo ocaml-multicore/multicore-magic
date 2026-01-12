@@ -2,5 +2,5 @@
  (name multicore_magic_atomic_array_boxed5)
  (package multicore-magic)
  (enabled_if
-  (<= 5.4.0 %{ocaml_version}))
+  (<= 5.5.0 %{ocaml_version}))
  (wrapped false))
