@@ -5,6 +5,7 @@
   (select
    multicore_magic.ml
    from
+   (multicore_magic_atomic_array_unboxed5_4 -> multicore_magic.common.ml)
    (multicore_magic_atomic_array_unboxed5 -> multicore_magic.common.ml)
    (multicore_magic_atomic_array_boxed5 -> multicore_magic.common.ml)
    (multicore_magic_atomic_array_ocaml4 -> multicore_magic.common.ml))))

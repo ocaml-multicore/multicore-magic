@@ -1,0 +1,10 @@
+(library
+ (name multicore_magic_atomic_array_unboxed5_4)
+ (package multicore-magic)
+ (enabled_if
+  (and
+   (<= 5.4.0 %{ocaml_version})
+   (< %{ocaml_version} 5.5.0)))
+ (js_of_ocaml
+  (javascript_files multicore_magic_atomic_array.js))
+ (wrapped false))
