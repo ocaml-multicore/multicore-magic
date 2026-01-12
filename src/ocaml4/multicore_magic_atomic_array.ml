@@ -38,9 +38,9 @@ let[@poll error] [@inline never] unsafe_compare_and_set (xs : string array) i b
   let before = Array.unsafe_get xs i in
   before == b
   && begin
-       Array.unsafe_set xs i a;
-       true
-     end
+    Array.unsafe_set xs i a;
+    true
+  end
 
 let[@inline] unsafe_compare_and_set (type a) (xs : a array) i (b : a) (a : a) =
   unsafe_compare_and_set

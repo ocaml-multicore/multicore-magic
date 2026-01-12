@@ -106,9 +106,9 @@ open struct
     let[@poll error] [@inline never] cas_domain domain before after =
       !domain == before
       && begin
-           domain := after;
-           true
-         end
+        domain := after;
+        true
+      end
 
     let[@inline never] rec instantaneous_domain_index t domain =
       let index = !domain in
