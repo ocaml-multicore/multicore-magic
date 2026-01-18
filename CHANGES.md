@@ -1,3 +1,7 @@
+## 2.3.2
+
+- Unboxed `Atomic_array` on 5.4 (@polytypic)
+
 ## 2.3.1
 
 - Allow unboxed `Atomic_array` on 5.3 (@polytypic)
